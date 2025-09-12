@@ -1,0 +1,166 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* Layout classes */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin: 3rem 0;
+  align-items: stretch;
+}
+
+.threeCol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin: 3rem 0;
+  align-items: stretch;
+}
+
+@media screen and (max-width: 996px) {
+  .twoCol {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .threeCol {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* Card styling */
+.card {
+  background: var(--ifm-card-background-color);
+  border: 1px solid var(--ucfr-bone);
+  border-radius: var(--ifm-card-border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--ifm-global-shadow-lw);
+  text-align: left;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Bullets styling */
+.bullets {
+  list-style: none;
+  padding-left: 0;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.bullets li:before {
+  content: "•";
+  color: var(--ucfr-slate-gray);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+/* Logo grid */
+.logoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.logoPlaceholder {
+  background: var(--ucfr-bone);
+  border: 1px solid var(--ucfr-khaki);
+  border-radius: 4px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ucfr-raisin-black);
+}
+
+@media screen and (max-width: 768px) {
+  .logoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Small text */
+.small {
+  font-size: 0.875rem;
+  color: var(--ucfr-slate-gray);
+  margin-top: 1rem;
+}
+
+/* Main content alignment */
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Section spacing and alignment */
+section {
+  margin: 4rem 0;
+  text-align: center;
+}
+
+section:first-of-type {
+  margin-top: 2rem;
+}
+
+/* Grid content alignment */
+.twoCol,
+.threeCol {
+  text-align: left;
+}
+
+.twoCol > div,
+.threeCol > div {
+  text-align: left;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .card {
+  background: var(--ifm-background-surface-color);
+  border-color: var(--ucfr-khaki);
+}
+
+[data-theme="dark"] .logoPlaceholder {
+  background: var(--ucfr-khaki);
+  border-color: var(--ucfr-bone);
+  color: var(--ucfr-raisin-black);
+}
+
+[data-theme="dark"] .small {
+  color: var(--ucfr-bone);
+}
