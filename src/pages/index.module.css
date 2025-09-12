@@ -8,6 +8,17 @@
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-image: url("/img/fingerprint-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: var(--ucfr-bone);
+}
+
+.heroBanner .container {
+  position: relative;
+  z-index: 2;
 }
 
 @media screen and (max-width: 996px) {
@@ -16,12 +27,18 @@
   }
 }
 
+.heroSubtitle,
+.heroTitle {
+  color: var(--ifm-font-color-base);
+}
+
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
+  color: var(--ifm-font-color-base);
 }
 
 /* Layout classes */

@@ -11,10 +11,10 @@ function HomepageHeader() {
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
-        <Heading as="h1" className="hero__title">
+        <Heading as="h1" className={clsx("hero__title", styles.heroTitle)}>
           Universal Content Fingerprinting Registry (UCFR)
         </Heading>
-        <p className="hero__subtitle">
+        <p className={clsx("hero__subtitle", styles.heroSubtitle)}>
           A comprehensive, privacy‑first way for creators to establish
           verifiable authorship with cryptographic fingerprints and an on‑chain
           registry, while transparently declaring AI involvement.
@@ -26,7 +26,7 @@ function HomepageHeader() {
           >
             Read the docs
           </Link>
-          <Link className="button button--outline button--lg" to="#learn">
+          <Link className="button button--secondary button--lg" to="#learn">
             Learn more
           </Link>
         </div>
