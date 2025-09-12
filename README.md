@@ -1,41 +1,56 @@
-# Website
+# Universal Content Fingerprinting Registry (UCFR) Documentation
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+A comprehensive, privacy-first way for creators to establish verifiable authorship with cryptographic fingerprints and an on-chain registry, while transparently declaring AI involvement.
 
-## Installation
+## About UCFR
+
+UCFR is a system that provides:
+
+- **Simplified model**: Three core structs — Claim, ExternalID, Method
+- **Neutral core**: No policy thresholds on-chain; applications apply their own logic
+- **Future-proof**: Methods are islands; new methods add new IDs without migrations
+- **Open-source first**: Built on widely available, community-verified methods; vendor-neutral
+- **Composable**: Works with C2PA and W3C VCs; on-chain metadata uses canonical JSON (RFC 8785)
+
+### Key Features
+
+- **Hijack-resistant**: Perceptual hashes can't claim ownership; only exact digests can
+- **Simple and stable**: Compact on-chain core; simple to integrate
+- **Interoperable**: Designed to snap into C2PA, VC 2.0, and common fingerprint libraries
+- **Privacy-first**: Local key storage with transparent AI declarations
+
+## Development
+
+### Installation
 
 ```bash
-yarn
+npm install
 ```
 
-## Local Development
+### Local Development
 
 ```bash
-yarn start
+npm start
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
-## Build
+### Build
 
 ```bash
-yarn build
+npm run build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-## Deployment
-
-Using SSH:
+### Type Checking
 
 ```bash
-USE_SSH=true yarn deploy
+npm run typecheck
 ```
 
-Not using SSH:
+### Serve Built Site
 
 ```bash
-GIT_USER=<Your GitHub username> yarn deploy
+npm run serve
 ```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
