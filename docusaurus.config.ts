@@ -69,7 +69,12 @@ const config: Config = {
           type: "docSidebar",
           sidebarId: "tutorialSidebar",
           position: "left",
-          label: "Tutorial",
+          label: "Documentation",
+        },
+        {
+          href: "https://github.com/universal-content-fingerprint-registry/core",
+          label: "Smart Contract",
+          position: "left",
         },
         {
           href: "https://github.com/universal-content-fingerprint-registry/",
@@ -85,25 +90,21 @@ const config: Config = {
           title: "Docs",
           items: [
             {
-              label: "Tutorial",
+              label: "Introduction",
               to: "/docs/intro",
             },
           ],
         },
         {
-          title: "Community",
+          title: "Resources",
           items: [
             {
-              label: "Stack Overflow",
-              href: "https://stackoverflow.com/questions/tagged/docusaurus",
+              label: "Smart Contract",
+              href: "https://github.com/universal-content-fingerprint-registry/core",
             },
             {
-              label: "Discord",
-              href: "https://discordapp.com/invite/docusaurus",
-            },
-            {
-              label: "X",
-              href: "https://x.com/docusaurus",
+              label: "Documentation",
+              to: "/docs/intro",
             },
           ],
         },
@@ -117,7 +118,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Universal Content Fingerprinting Registry. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
