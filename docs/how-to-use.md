@@ -6,16 +6,48 @@ sidebar_position: 2
 
 This guide explains how to interact with the GeneralizedClaimRegistry smart contract to create and manage content fingerprint claims.
 
+## Setup and Initialization
+
+First, download the contract ABI and import the necessary dependencies:
+
+### Download the Contract ABI
+
+You can download the GeneralizedClaimRegistry ABI file here: [GeneralizaedClaimRegistryABI.json](/GeneralizaedClaimRegistryABI.json)
+
+Save this file to your project directory and import it as shown below:
+
+```javascript
+import { ethers } from 'ethers';
+// Import the ABI from the static assets
+import ClaimRegistryABI from '../static/GeneralizaedClaimRegistryABI.json';
+
+// Initialize ethers with a random private key for development
+const privateKey = ethers.Wallet.createRandom().privateKey;
+// Or use your own private key (never expose in production!)
+// const privateKey = "0x1234567890abcdef..."; // Your private key
+
+// Connect to Stability Protocol's Zero Gas Token network
+const provider = new ethers.JsonRpcProvider("https://rpc.stabilityprotocol.com/zgt/try-it-out");
+
+// Create a wallet instance
+const wallet = new ethers.Wallet(privateKey, provider);
+console.log("Wallet address:", wallet.address);
+```
+
 ## Contract Deployment
 
 Deploy the contract using your preferred method:
 
 ```javascript
-// Using ethers.js
+// Using ethers.js - if you have the contract source
 const GeneralizedClaimRegistry = await ethers.getContractFactory("GeneralizedClaimRegistry");
 const registry = await GeneralizedClaimRegistry.deploy();
 await registry.waitForDeployment();
 console.log("Registry deployed to:", await registry.getAddress());
+
+// Or connect to an already deployed contract using the ABI
+const registryAddress = "0x1234567890123456789012345678901234567890"; // Replace with actual address
+const registry = new ethers.Contract(registryAddress, ClaimRegistryABI.abi, wallet);
 ```
 
 ## Setting Up Methods and External IDs
@@ -25,8 +57,8 @@ Before creating claims, an admin must register the cryptographic methods and ext
 ### Register Cryptographic Methods
 
 ```javascript
-// Connect to the deployed contract
-const registry = await ethers.getContractAt("GeneralizedClaimRegistry", registryAddress);
+// Assuming you have connected to the contract as shown above
+// const registry = new ethers.Contract(registryAddress, ClaimRegistryABI.abi, wallet);
 
 // Register SHA-256 method
 await registry.registerMethod(

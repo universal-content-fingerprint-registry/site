@@ -1,0 +1,738 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [],
+      "name": "AdminLocked",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "digest",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "Claimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "name": "ExternalIDActiveSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "specURI",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "sigSizeHint",
+          "type": "uint32"
+        }
+      ],
+      "name": "ExternalIDRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "name": "MethodActiveSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "fpSizeBytes",
+          "type": "uint32"
+        }
+      ],
+      "name": "MethodRegistered",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "admin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "adminLocked",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "fingerprints",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "metadatas",
+          "type": "string[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "extURIs",
+          "type": "string[]"
+        }
+      ],
+      "name": "batchClaimById",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "fingerprints",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "externalSigs",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "bytes[]",
+          "name": "pubKeys",
+          "type": "bytes[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "metadatas",
+          "type": "string[]"
+        },
+        {
+          "internalType": "string[]",
+          "name": "extURIs",
+          "type": "string[]"
+        }
+      ],
+      "name": "batchClaimByIdWithExternalSig",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "extURI",
+          "type": "string"
+        }
+      ],
+      "name": "claimById",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "externalSig",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "pubkey",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "extURI",
+          "type": "string"
+        }
+      ],
+      "name": "claimByIdwithExternalSig",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "claimsById",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "metadata",
+          "type": "string"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint64",
+          "name": "timestamp",
+          "type": "uint64"
+        },
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint16",
+          "name": "externalId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "externalSig",
+          "type": "bytes"
+        },
+        {
+          "internalType": "bytes",
+          "name": "pubKey",
+          "type": "bytes"
+        },
+        {
+          "internalType": "string",
+          "name": "extURI",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "name": "externalIDs",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "string",
+          "name": "specURI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint32",
+          "name": "sigSizeHint",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        }
+      ],
+      "name": "getClaimById",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "fingerprint",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "timestamp",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint16",
+              "name": "methodId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "externalId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "externalSig",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pubKey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "string",
+              "name": "extURI",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct GeneralizedClaimRegistry.Claim",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        }
+      ],
+      "name": "getClaimByIdWithExtId",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "fingerprint",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "timestamp",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint16",
+              "name": "methodId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "externalId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "externalSig",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pubKey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "string",
+              "name": "extURI",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct GeneralizedClaimRegistry.Claim",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bytes",
+          "name": "fingerprint",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint16",
+          "name": "sigId",
+          "type": "uint16"
+        }
+      ],
+      "name": "getMetadataById",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lockAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "name": "methods",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "specURI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint32",
+          "name": "fpSizeBytes",
+          "type": "uint32"
+        },
+        {
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "string",
+          "name": "specURI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint32",
+          "name": "sigSizeHint",
+          "type": "uint32"
+        }
+      ],
+      "name": "registerExternalID",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "specURI",
+          "type": "string"
+        },
+        {
+          "internalType": "uint32",
+          "name": "fpSizeBytes",
+          "type": "uint32"
+        }
+      ],
+      "name": "registerMethod",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "extId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "name": "setExternalIDActive",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "methodId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bool",
+          "name": "active",
+          "type": "bool"
+        }
+      ],
+      "name": "setMethodActive",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
