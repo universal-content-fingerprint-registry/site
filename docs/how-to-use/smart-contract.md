@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# How to Use
+# The Smart Contract
 
 This guide explains how to interact with the GeneralizedClaimRegistry smart contract to create and manage content fingerprint claims.
 
