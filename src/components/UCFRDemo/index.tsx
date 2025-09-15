@@ -149,7 +149,7 @@ function UCFRDemoInner() {
           0n, // methodId (SHA-256, pre-registered)
           2n, // externalId (ECDSA signature)
           sha256Hash as `0x${string}`,
-          metadata || "Demo claim",
+          metadata || "",
           extURI || "",
         ],
         chain: stabilityZGT,
