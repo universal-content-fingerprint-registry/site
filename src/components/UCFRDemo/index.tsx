@@ -180,7 +180,7 @@ function UCFRDemoInner() {
     if (isConfirmed && sha256Hash) {
       setTimeout(() => {
         setVerifyFingerprint(sha256Hash);
-      }, 2_000);
+      }, 1_000);
     }
   }, [isConfirmed, sha256Hash]);
 

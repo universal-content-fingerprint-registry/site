@@ -66,10 +66,14 @@ const config: Config = {
       },
       items: [
         {
-          type: "docSidebar",
-          sidebarId: "tutorialSidebar",
-          position: "left",
+          to: "/docs/intro",
           label: "Documentation",
+          position: "left",
+        },
+        {
+          to: "/docs/interactive-demo",
+          label: "Interactive Demo",
+          position: "left",
         },
         {
           href: "https://github.com/universal-content-fingerprint-registry/core",
@@ -93,6 +97,10 @@ const config: Config = {
               label: "Introduction",
               to: "/docs/intro",
             },
+            {
+              label: "Interactive Demo",
+              to: "/docs/interactive-demo",
+            },
           ],
         },
         {
@@ -101,10 +109,6 @@ const config: Config = {
             {
               label: "Smart Contract",
               href: "https://github.com/universal-content-fingerprint-registry/core",
-            },
-            {
-              label: "Documentation",
-              to: "/docs/intro",
             },
           ],
         },
