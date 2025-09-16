@@ -369,9 +369,10 @@ function UCFRDemoInner() {
       <div className={styles.section}>
         <h3>4. Verify Claim</h3>
         <p className={styles.sectionDescription}>
-          Verify that a claim exists on the blockchain by entering its SHA-256
-          fingerprint. This will show you who owns the claim and when it was
-          created.
+          Verify that a claim exists on the blockchain by entering its
+          fingerprint (the MethodId is hardcoded to SHA-256). This will return
+          the associated data including the External ID (Signature) if
+          available.
         </p>
         <div className={styles.inputs}>
           <input
