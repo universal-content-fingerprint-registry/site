@@ -65,11 +65,8 @@ function UCFRDemoInner() {
   const [extURI, setExtURI] = useState("");
   const [sha256Hash, setSha256Hash] = useState("");
   const [verifyFingerprint, setVerifyFingerprint] = useState("");
-  const [claimResult, setClaimResult] = useState(null);
   const [verifyResult, setVerifyResult] = useState(null);
 
-  // Use deterministic demo account
-  const address = demoAccount.address;
   const isConnected = true; // Always connected with demo wallet
 
   const {
@@ -77,6 +74,7 @@ function UCFRDemoInner() {
     data: hash,
     error: writeError,
     isPending: isWritePending,
+    reset: resetWriteContract,
   } = useWriteContract({});
 
   // Wait for transaction receipt
@@ -141,6 +139,7 @@ function UCFRDemoInner() {
     if (!content || !isConnected || !sha256Hash) return;
 
     try {
+      setVerifyResult(null);
       await writeContract({
         address: CONTRACT_ADDRESS,
         abi: ClaimRegistryABI,
@@ -163,6 +162,8 @@ function UCFRDemoInner() {
   // Handle verify claim
   const handleVerifyClaim = () => {
     if (verifyFingerprint) {
+      // Reset previous results before starting new verification
+      setVerifyResult(null);
       refetchVerify();
     }
   };
@@ -202,7 +203,15 @@ function UCFRDemoInner() {
         <h3>1. Hash Your Content</h3>
         <textarea
           value={content}
-          onChange={(e) => setContent(e.target.value)}
+          onChange={(e) => {
+            setContent(e.target.value);
+            // Reset all related controls when content changes
+            setMetadata("");
+            setExtURI("");
+            setVerifyFingerprint("");
+            setVerifyResult(null);
+            resetWriteContract();
+          }}
           placeholder="Enter your text content to hash... (e.g. This is my important document content)"
           className={styles.textarea}
           rows={4}
@@ -337,7 +346,13 @@ function UCFRDemoInner() {
           <input
             type="text"
             value={verifyFingerprint}
-            onChange={(e) => setVerifyFingerprint(e.target.value)}
+            onChange={(e) => {
+              // Reset previous results when user starts typing new fingerprint
+              if (verifyResult) {
+                setVerifyResult(null);
+              }
+              setVerifyFingerprint(e.target.value);
+            }}
             placeholder="Enter fingerprint to verify (0x...)"
             className={styles.input}
             disabled={!isConfirmed}
