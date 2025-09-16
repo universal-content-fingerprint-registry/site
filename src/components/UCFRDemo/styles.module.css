@@ -200,6 +200,40 @@
   border-radius: 6px;
 }
 
+.duplicateError {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  color: #b08800;
+  background-color: #fff8c5;
+  border: 1px solid #d1ac00;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.errorIcon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.duplicateError strong {
+  color: #9a6700;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.duplicateError p {
+  margin: 4px 0;
+  color: #7d5d00;
+  line-height: 1.4;
+}
+
+.errorSuggestion {
+  font-style: italic;
+  margin-top: 8px !important;
+}
+
 .txHash {
   margin: 15px 0;
   padding: 16px;

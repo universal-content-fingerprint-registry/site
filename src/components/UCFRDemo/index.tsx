@@ -175,7 +175,7 @@ function UCFRDemoInner() {
     }
   }, [verifyData]);
 
-  // Auto-fill verify fingerprint when claim is created successfully
+  // Auto-fill verify fingerprint when claim is created successfully or when duplicate error occurs
   useEffect(() => {
     if (isConfirmed && sha256Hash) {
       setTimeout(() => {
@@ -183,6 +183,17 @@ function UCFRDemoInner() {
       }, 1_000);
     }
   }, [isConfirmed, sha256Hash]);
+
+  // Auto-fill verify fingerprint when duplicate claim error occurs
+  useEffect(() => {
+    if (
+      writeError &&
+      writeError.message.includes("claim exists") &&
+      sha256Hash
+    ) {
+      setVerifyFingerprint(sha256Hash);
+    }
+  }, [writeError, sha256Hash]);
 
   return (
     <div className={styles.demo}>
@@ -307,7 +318,27 @@ function UCFRDemoInner() {
           <p className={styles.success}>Claim created successfully!</p>
         )}
         {writeError && (
-          <p className={styles.error}>Error: {writeError.message}</p>
+          <div className={styles.error}>
+            {writeError.message.includes("claim exists") ? (
+              <div className={styles.duplicateError}>
+                <div className={styles.errorIcon}>⚠️</div>
+                <div>
+                  <strong>Claim Already Exists</strong>
+                  <p>
+                    A claim for this content fingerprint already exists on the
+                    blockchain. Each piece of content can only be claimed once.
+                  </p>
+                  <p className={styles.errorSuggestion}>
+                    The verification section below has been auto-filled with
+                    your fingerprint. Click "Verify Claim" to see who owns this
+                    content.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p>Error: {writeError.message}</p>
+            )}
+          </div>
         )}
         {hash && (
           <div className={styles.txHash}>
@@ -355,13 +386,17 @@ function UCFRDemoInner() {
             }}
             placeholder="Enter fingerprint to verify (0x...)"
             className={styles.input}
-            disabled={!isConfirmed}
+            disabled={
+              !isConfirmed &&
+              !(writeError && writeError.message.includes("claim exists"))
+            }
           />
           <button
             onClick={handleVerifyClaim}
             disabled={
               !verifyFingerprint ||
-              !isConfirmed ||
+              (!isConfirmed &&
+                !(writeError && writeError.message.includes("claim exists"))) ||
               isVerifying ||
               isVerifyFetching
             }
@@ -372,11 +407,12 @@ function UCFRDemoInner() {
               : "Verify Claim"}
           </button>
         </div>
-        {!isConfirmed && (
-          <p className={styles.disabledNote}>
-            Create a claim first to enable verification
-          </p>
-        )}
+        {!isConfirmed &&
+          !(writeError && writeError.message.includes("claim exists")) && (
+            <p className={styles.disabledNote}>
+              Create a claim first to enable verification
+            </p>
+          )}
 
         {/* Loading state */}
         {(isVerifying || isVerifyFetching) && (
