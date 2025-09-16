@@ -11,42 +11,57 @@ This section demonstrates how to properly hash different types of content and in
 ### Text Documents
 
 ```javascript
-import { ethers } from "ethers";
 import { createHash } from "crypto";
 
-// Method 1: Using ethers.js (Keccak-256)
 const textContent = "This is my important document content";
-const keccakHash = ethers.keccak256(ethers.toUtf8Bytes(textContent));
-console.log("Keccak-256 hash:", keccakHash);
 
-// Method 2: Using Node.js crypto (SHA-256) - for registered SHA-256 method
-const sha256Hash = createHash("sha256").update(textContent, "utf8").digest();
-const sha256Hex = "0x" + sha256Hash.toString("hex");
+// Method 1: Using Node.js crypto (SHA-256) - most common for registry
+const sha256Hash = createHash("sha256").update(textContent, "utf8").digest("hex");
+const sha256Hex = "0x" + sha256Hash;
 console.log("SHA-256 hash:", sha256Hex);
+
+// Method 2: Using Node.js crypto (SHA-1) - if needed
+const sha1Hash = createHash("sha1").update(textContent, "utf8").digest("hex");
+const sha1Hex = "0x" + sha1Hash;
+console.log("SHA-1 hash:", sha1Hex);
+
+// Method 3: Using Node.js crypto (MD5) - for legacy compatibility
+const md5Hash = createHash("md5").update(textContent, "utf8").digest("hex");
+const md5Hex = "0x" + md5Hash;
+console.log("MD5 hash:", md5Hex);
 ```
 
 ### Files (Binary Data)
 
 ```javascript
 import fs from "fs";
+import { createHash } from "crypto";
 
 // Hash a file
 const fileBuffer = fs.readFileSync("./document.pdf");
 
-// Using SHA-256
-const fileHashSha256 = createHash("sha256").update(fileBuffer).digest();
-const fileHashHex = "0x" + fileHashSha256.toString("hex");
+// Using SHA-256 (most common)
+const fileHashSha256 = createHash("sha256").update(fileBuffer).digest("hex");
+const fileHashSha256Hex = "0x" + fileHashSha256;
 
-// Using Keccak-256
-const fileHashKeccak = ethers.keccak256(fileBuffer);
+// Using SHA-1
+const fileHashSha1 = createHash("sha1").update(fileBuffer).digest("hex");
+const fileHashSha1Hex = "0x" + fileHashSha1;
 
-console.log("File SHA-256:", fileHashHex);
-console.log("File Keccak-256:", fileHashKeccak);
+// Using MD5 (for legacy compatibility)
+const fileHashMd5 = createHash("md5").update(fileBuffer).digest("hex");
+const fileHashMd5Hex = "0x" + fileHashMd5;
+
+console.log("File SHA-256:", fileHashSha256Hex);
+console.log("File SHA-1:", fileHashSha1Hex);
+console.log("File MD5:", fileHashMd5Hex);
 ```
 
 ### JSON Data
 
 ```javascript
+import { createHash } from "crypto";
+
 // Hash structured data consistently
 const jsonData = {
   title: "My Document",
@@ -57,8 +72,16 @@ const jsonData = {
 
 // Stringify with sorted keys for consistency
 const canonicalJson = JSON.stringify(jsonData, Object.keys(jsonData).sort());
-const jsonHash = ethers.keccak256(ethers.toUtf8Bytes(canonicalJson));
-console.log("JSON hash:", jsonHash);
+
+// Using SHA-256 (recommended)
+const jsonHashSha256 = createHash("sha256").update(canonicalJson, "utf8").digest("hex");
+const jsonHashSha256Hex = "0x" + jsonHashSha256;
+console.log("JSON SHA-256 hash:", jsonHashSha256Hex);
+
+// Using SHA-1 if needed
+const jsonHashSha1 = createHash("sha1").update(canonicalJson, "utf8").digest("hex");
+const jsonHashSha1Hex = "0x" + jsonHashSha1;
+console.log("JSON SHA-1 hash:", jsonHashSha1Hex);
 ```
 
 ## Complete Interaction Example
@@ -98,9 +121,7 @@ async function createDocumentClaim() {
     `;
 
     // Step 2: Generate fingerprint using SHA-256
-    const contentBuffer = Buffer.from(documentContent, "utf8");
-    const sha256Hash = createHash("sha256").update(contentBuffer).digest();
-    const fingerprint = "0x" + sha256Hash.toString("hex");
+    const fingerprint = "0x" + createHash("sha256").update(documentContent, "utf8").digest("hex");
 
     console.log("Document fingerprint:", fingerprint);
     console.log(
@@ -260,39 +281,46 @@ verifyClaim(myFingerprint, myAddress);
 Always use the same method and encoding when generating fingerprints:
 
 ```javascript
-// Good: Consistent approach
+import { createHash } from "crypto";
+
+// Good: Consistent approach using SHA-256
 const content = "My document content";
-const fingerprint = ethers.keccak256(ethers.toUtf8Bytes(content));
+const fingerprint = "0x" + createHash("sha256").update(content, "utf8").digest("hex");
 
 // Bad: Inconsistent encoding could lead to different hashes
-const badFingerprint1 = ethers.keccak256(Buffer.from(content, "ascii"));
-const badFingerprint2 = ethers.keccak256(Buffer.from(content, "utf16le"));
+const badFingerprint1 = "0x" + createHash("sha256").update(content, "ascii").digest("hex");
+const badFingerprint2 = "0x" + createHash("sha256").update(content, "utf16le").digest("hex");
 ```
 
 ### Handle File Types Appropriately
 
 ```javascript
+import fs from "fs";
+import { createHash } from "crypto";
+
 // For text files - ensure consistent encoding
 const textContent = fs.readFileSync("document.txt", "utf8");
-const textHash = ethers.keccak256(ethers.toUtf8Bytes(textContent));
+const textHash = "0x" + createHash("sha256").update(textContent, "utf8").digest("hex");
 
 // For binary files - read as buffer
 const binaryContent = fs.readFileSync("image.jpg");
-const binaryHash = ethers.keccak256(binaryContent);
+const binaryHash = "0x" + createHash("sha256").update(binaryContent).digest("hex");
 ```
 
 ### Normalize Data Before Hashing
 
 ```javascript
+import { createHash } from "crypto";
+
 // For JSON data, sort keys and remove whitespace
 const data = { b: 2, a: 1, c: 3 };
 const normalized = JSON.stringify(data, Object.keys(data).sort());
-const hash = ethers.keccak256(ethers.toUtf8Bytes(normalized));
+const hash = "0x" + createHash("sha256").update(normalized, "utf8").digest("hex");
 
 // For text, consider normalizing whitespace
 const text = "  Multiple   spaces   ";
 const normalizedText = text.trim().replace(/\s+/g, " ");
-const textHash = ethers.keccak256(ethers.toUtf8Bytes(normalizedText));
+const textHash = "0x" + createHash("sha256").update(normalizedText, "utf8").digest("hex");
 ```
 
 ## Error Handling and Recovery
@@ -302,8 +330,8 @@ const textHash = ethers.keccak256(ethers.toUtf8Bytes(normalizedText));
 ```javascript
 async function robustClaimCreation(content, metadata, extURI) {
   try {
-    // Generate fingerprint
-    const fingerprint = ethers.keccak256(ethers.toUtf8Bytes(content));
+    // Generate fingerprint using SHA-256
+    const fingerprint = "0x" + createHash("sha256").update(content, "utf8").digest("hex");
 
     // Check if claim exists first
     const existingClaim = await registry.getClaimById(1, fingerprint);
