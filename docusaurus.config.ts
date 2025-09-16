@@ -123,7 +123,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Universal Content Fingerprinting Registry. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Universal Content Fingerprinting Registry. Built by <a href="https://stabilityprotocol.com" target="_blank" rel="noopener noreferrer">Stability</a>.`,
     },
     prism: {
       theme: prismThemes.github,
