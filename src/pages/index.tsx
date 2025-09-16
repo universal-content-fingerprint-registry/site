@@ -26,8 +26,11 @@ function HomepageHeader() {
           >
             Read the docs
           </Link>
-          <Link className="button button--secondary button--lg" to="#learn">
-            Learn more
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs/interactive-demo"
+          >
+            Try the demo
           </Link>
         </div>
       </div>
