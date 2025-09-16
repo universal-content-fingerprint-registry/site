@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Interactive Demo
 
-This interactive demo shows how to use WAGMI and Viem to interact with the Universal Content Fingerprinting Registry smart contract deployed on Stability Protocol's Zero Gas Token network. The demo uses a deterministic wallet that's always the same for consistency.
+This interactive demo shows how to use WAGMI and Viem to interact with the Universal Content Fingerprinting Registry smart contract deployed on Stability Protocol's Global Trust Network. The demo uses a deterministic wallet that's always the same for consistency.
 
 ## Live Demo
 
@@ -22,7 +22,7 @@ import DemoLoader from '@site/src/components/DemoLoader';
 
 ## Code Examples
 
-The demo implements the patterns shown in the [Hashing Guide](how-to-use/hashing.md) and [Smart Contract Guide](how-to-use/smart-contract.md) using modern React hooks and WAGMI.
+The demo implements the patterns shown in the [Hashing Guide](how-to-use/hashing.md) and [Concepts](how-to-use/concepts.md) using modern React hooks and WAGMI.
 
 ## Try It Yourself
 
