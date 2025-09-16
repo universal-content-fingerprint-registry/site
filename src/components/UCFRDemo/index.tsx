@@ -402,7 +402,7 @@ function UCFRDemoInner() {
                 <h4>Claim Verified Successfully!</h4>
                 <div className={styles.claimDetails}>
                   <div className={styles.claimField}>
-                    <strong>Owner:</strong>
+                    <strong>Creator:</strong>
                     <code>{verifyResult.owner}</code>
                   </div>
                   <div className={styles.claimField}>
