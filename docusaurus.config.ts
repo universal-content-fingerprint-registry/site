@@ -8,7 +8,7 @@ const config: Config = {
   title: "Universal Content Fingerprinting Registry",
   tagline:
     "A comprehensive, privacy‑first way for creators to establish verifiable authorship with cryptographic fingerprints and an on‑chain registry, while transparently declaring AI involvement.",
-  favicon: "img/favicon.ico",
+  favicon: "img/UCFR_dark_bg_logo_only.png",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
