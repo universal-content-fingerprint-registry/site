@@ -57,12 +57,13 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/UCFR_light_bg_stack.png",
     navbar: {
-      title: "UCFR",
+      title: "",
       logo: {
         alt: "UCFR Logo",
-        src: "img/logo.svg",
+        src: "img/UCFR_light_bg_inline.png",
+        srcDark: "img/UCFR_dark_bg_inline.png",
       },
       items: [
         {
