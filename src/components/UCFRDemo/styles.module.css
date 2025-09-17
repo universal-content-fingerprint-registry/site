@@ -76,6 +76,12 @@
   font-size: 1.2rem;
 }
 
+.sectionDescription {
+  margin: 0 0 12px 0;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
 .textarea {
   width: 100%;
   padding: 12px;
@@ -137,10 +143,20 @@
   font-size: 14px;
 }
 
+.inputFull {
+  width: 100%;
+  flex: 1 1 100%;
+}
+
 .input:focus {
   outline: none;
   border-color: #0969da;
   box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.3);
+}
+
+.inputInvalid {
+  border-color: #d1242f;
+  background-color: #ffebe9;
 }
 
 .button {
@@ -153,6 +169,24 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+
+.buttonSecondary {
+  padding: 8px 12px;
+  background-color: white;
+  color: #0969da;
+  border: 1px solid #0969da;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.buttonSecondary:hover {
+  background-color: #0969da;
+  color: white;
+  transform: translateY(-1px);
 }
 
 .button:hover:not(:disabled) {
@@ -276,6 +310,51 @@
   transform: translateY(-1px);
 }
 
+.buttonGroup {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.controlsRow {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.smallNote {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.helperText {
+  margin: 6px 0 0 0;
+  color: #9a6700;
+  font-size: 12px;
+}
+
+.pillGroup {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background-color: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .txHashValue {
   display: block;
   font-family: "SFMono-Regular", Consolas, monospace;
@@ -314,6 +393,52 @@
 
 .verifyResult {
   margin-top: 15px;
+}
+
+.verifyLoading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+}
+
+.loadingSpinner {
+  animation: spin 1.2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.noClaimFound,
+.claimFound {
+  padding: 16px;
+  background-color: white;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+}
+
+.resultIcon {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.claimDetails {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.claimField {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
 }
 
 .claimInfo {
