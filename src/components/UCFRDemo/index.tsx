@@ -440,7 +440,7 @@ function UCFRDemoInner() {
                 <div className={styles.claimDetails}>
                   <div className={styles.claimField}>
                     <strong>Creator:</strong>
-                    <code>{verifyResult.owner}</code>
+                    <code>{verifyResult.creator}</code>
                   </div>
                   <div className={styles.claimField}>
                     <strong>Created:</strong>
