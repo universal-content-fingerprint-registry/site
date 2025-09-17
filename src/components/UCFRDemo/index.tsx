@@ -7,7 +7,7 @@ import {
   useWaitForTransactionReceipt,
 } from "wagmi";
 // Removed unused viem imports - using Web Crypto API for SHA-256
-import { privateKeyToAccount } from "viem/accounts";
+import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import styles from "./styles.module.css";
 import GeneralizaedClaimRegistryABI from "@site/static/GeneralizaedClaimRegistryABI.json";
 
@@ -43,8 +43,7 @@ const ClaimRegistryABI = GeneralizaedClaimRegistryABI.abi;
 const CONTRACT_ADDRESS = "0x233173F335B19d5f8689C5cA723707d25ff32Ac2";
 
 // Deterministic demo wallet - always the same for consistency
-const DEMO_PRIVATE_KEY =
-  "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d"; // Demo key
+const DEMO_PRIVATE_KEY = generatePrivateKey(); // Demo key
 const demoAccount = privateKeyToAccount(DEMO_PRIVATE_KEY);
 
 // WAGMI Configuration
@@ -66,6 +65,9 @@ function UCFRDemoInner() {
   const [sha256Hash, setSha256Hash] = useState("");
   const [verifyFingerprint, setVerifyFingerprint] = useState("");
   const [verifyResult, setVerifyResult] = useState(null);
+  const [verifyErrorMsg, setVerifyErrorMsg] = useState("");
+  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000" as const;
+  const isValidVerifyHex = /^0x[0-9a-fA-F]{64}$/.test(verifyFingerprint);
 
   const isConnected = true; // Always connected with demo wallet
 
@@ -102,16 +104,18 @@ function UCFRDemoInner() {
     refetch: refetchVerify,
     isLoading: isVerifying,
     isFetching: isVerifyFetching,
+    error: verifyError,
   } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: ClaimRegistryABI,
     functionName: "getClaimByIdWithExtId",
-    args: verifyFingerprint
+    args: isValidVerifyHex
       ? [0n, verifyFingerprint as `0x${string}`, 2n]
       : undefined,
     chainId: stabilityZGT.id,
     query: {
-      enabled: !!verifyFingerprint,
+      enabled: false,
+      retry: false,
     },
   });
 
@@ -160,11 +164,28 @@ function UCFRDemoInner() {
   };
 
   // Handle verify claim
-  const handleVerifyClaim = () => {
-    if (verifyFingerprint) {
-      // Reset previous results before starting new verification
-      setVerifyResult(null);
-      refetchVerify();
+  const handleVerifyClaim = async () => {
+    if (!isValidVerifyHex) {
+      setVerifyErrorMsg(
+        "Invalid fingerprint. Expected 0x followed by 64 hex characters."
+      );
+      return;
+    }
+    setVerifyErrorMsg("");
+    // Reset previous results before starting new verification
+    setVerifyResult(null);
+    try {
+      const result = await refetchVerify();
+      // Force new reference to ensure UI updates even if data is identical
+      // result may be of shape { data, error, status }
+      const data = (result as any)?.data ?? result;
+      if (data) {
+        setVerifyResult({ ...(data as object) });
+      } else {
+        setVerifyResult(null);
+      }
+    } catch (e) {
+      setVerifyErrorMsg((e as Error)?.message || "Error verifying claim");
     }
   };
 
@@ -174,6 +195,12 @@ function UCFRDemoInner() {
       setVerifyResult(verifyData);
     }
   }, [verifyData]);
+
+  useEffect(() => {
+    if (isValidVerifyHex && verifyErrorMsg) {
+      setVerifyErrorMsg("");
+    }
+  }, [isValidVerifyHex, verifyErrorMsg]);
 
   // Auto-fill verify fingerprint when claim is created successfully or when duplicate error occurs
   useEffect(() => {
@@ -387,20 +414,11 @@ function UCFRDemoInner() {
             }}
             placeholder="Enter fingerprint to verify (0x...)"
             className={styles.input}
-            disabled={
-              !isConfirmed &&
-              !(writeError && writeError.message.includes("claim exists"))
-            }
+            disabled={false}
           />
           <button
             onClick={handleVerifyClaim}
-            disabled={
-              !verifyFingerprint ||
-              (!isConfirmed &&
-                !(writeError && writeError.message.includes("claim exists"))) ||
-              isVerifying ||
-              isVerifyFetching
-            }
+            disabled={!isValidVerifyHex || isVerifying || isVerifyFetching}
             className={styles.button}
           >
             {isVerifying || isVerifyFetching
@@ -408,11 +426,16 @@ function UCFRDemoInner() {
               : "Verify Claim"}
           </button>
         </div>
-        {!isConfirmed &&
-          !(writeError && writeError.message.includes("claim exists")) && (
-            <p className={styles.disabledNote}>
-              Create a claim first to enable verification
-            </p>
+        {(verifyErrorMsg || verifyError) &&
+          !isVerifying &&
+          !isVerifyFetching && (
+            <div className={styles.error}>
+              <p>
+                {verifyErrorMsg ||
+                  (verifyError as Error)?.message ||
+                  "Error verifying claim"}
+              </p>
+            </div>
           )}
 
         {/* Loading state */}
@@ -426,8 +449,7 @@ function UCFRDemoInner() {
         {/* Results */}
         {verifyResult && !isVerifying && !isVerifyFetching && (
           <div className={styles.verifyResult}>
-            {verifyResult[0] ===
-            "0x0000000000000000000000000000000000000000" ? (
+            {verifyResult.creator === ZERO_ADDRESS ? (
               <div className={styles.noClaimFound}>
                 <div className={styles.resultIcon}>❌</div>
                 <h4>No Claim Found</h4>
