@@ -40,7 +40,7 @@ const stabilityZGT = {
 // Use the imported ABI
 const ClaimRegistryABI = GeneralizaedClaimRegistryABI.abi;
 
-const CONTRACT_ADDRESS = "0xEff0AFc2C6E289846F7939c4d6291c4E5E75E030";
+const CONTRACT_ADDRESS = "0x233173F335B19d5f8689C5cA723707d25ff32Ac2";
 
 // Deterministic demo wallet - always the same for consistency
 const DEMO_PRIVATE_KEY =
