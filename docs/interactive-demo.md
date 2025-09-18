@@ -25,4 +25,4 @@ import DemoLoader from '@site/src/components/DemoLoader';
 
 The demo uses Stability Protocol's Global Trust Network, which allows free transactions. The `GeneralizedClaimRegistry` contract is deployed at:
 
-**Contract Address**: `0x233173F335B19d5f8689C5cA723707d25ff32Ac2`
+**Contract Address**: [`0x233173F335B19d5f8689C5cA723707d25ff32Ac2`](https://explorer.stabilityprotocol.com/address/0x233173F335B19d5f8689C5cA723707d25ff32Ac2)
