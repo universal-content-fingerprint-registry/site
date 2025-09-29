@@ -12,7 +12,7 @@ This page explains the core concepts for making claims in the Universal Content 
 
 - A record that associates a digital fingerprint (hash) of content with metadata, ownership information, and cryptographic signatures
 - Claims are immutable once created and provide verifiable proof of when and by whom they were made
-- Links a content fingerprint to an owner address with cryptographic proof
+- Links a content fingerprint to a creator address with cryptographic proof
 
 ## Method ID - How Content is Fingerprinted
 
@@ -83,22 +83,15 @@ This page explains the core concepts for making claims in the Universal Content 
 
 ## Making Claims
 
-### Simple Claims (claimById)
+### Simple Claims (claim)
 
 - Basic claim without external signature
 - Uses Method ID to specify fingerprinting algorithm
 - Suitable for public content registration
 
-### Authenticated Claims (claimByIdwithExternalSig)
+### Authenticated Claims (claim with external signature)
 
 - Includes cryptographic signature proving ownership
 - Requires both Method ID and External ID
 - Provides stronger proof of content control
 - Suitable for valuable or sensitive content
-
-### Batch Claims
-
-- Register multiple claims in single transaction
-- All claims must use same Method ID and External ID
-- More gas-efficient for bulk operations
-- Either all claims succeed or all fail together

@@ -16,7 +16,9 @@ import { createHash } from "crypto";
 const textContent = "This is my important document content";
 
 // Method 1: Using Node.js crypto (SHA-256) - most common for registry
-const sha256Hash = createHash("sha256").update(textContent, "utf8").digest("hex");
+const sha256Hash = createHash("sha256")
+  .update(textContent, "utf8")
+  .digest("hex");
 const sha256Hex = "0x" + sha256Hash;
 console.log("SHA-256 hash:", sha256Hex);
 
@@ -74,12 +76,16 @@ const jsonData = {
 const canonicalJson = JSON.stringify(jsonData, Object.keys(jsonData).sort());
 
 // Using SHA-256 (recommended)
-const jsonHashSha256 = createHash("sha256").update(canonicalJson, "utf8").digest("hex");
+const jsonHashSha256 = createHash("sha256")
+  .update(canonicalJson, "utf8")
+  .digest("hex");
 const jsonHashSha256Hex = "0x" + jsonHashSha256;
 console.log("JSON SHA-256 hash:", jsonHashSha256Hex);
 
 // Using SHA-1 if needed
-const jsonHashSha1 = createHash("sha1").update(canonicalJson, "utf8").digest("hex");
+const jsonHashSha1 = createHash("sha1")
+  .update(canonicalJson, "utf8")
+  .digest("hex");
 const jsonHashSha1Hex = "0x" + jsonHashSha1;
 console.log("JSON SHA-1 hash:", jsonHashSha1Hex);
 ```
@@ -91,7 +97,7 @@ Here's a full example showing the entire process from content hashing to smart c
 ```javascript
 import { ethers } from "ethers";
 import { createHash } from "crypto";
-import ClaimRegistryABI from "./GeneralizaedClaimRegistryABI.json";
+import ClaimRegistryABI from "./GeneralizedClaimRegistryABI.json";
 
 // Setup wallet and provider
 const privateKey =
@@ -121,7 +127,8 @@ async function createDocumentClaim() {
     `;
 
     // Step 2: Generate fingerprint using SHA-256
-    const fingerprint = "0x" + createHash("sha256").update(documentContent, "utf8").digest("hex");
+    const fingerprint =
+      "0x" + createHash("sha256").update(documentContent, "utf8").digest("hex");
 
     console.log("Document fingerprint:", fingerprint);
     console.log(
@@ -133,7 +140,7 @@ async function createDocumentClaim() {
     );
 
     // Step 3: Prepare claim data
-    const methodId = 1; // SHA-256 method (must be registered first)
+    const methodId = 0; // SHA-256 method (pre-registered in demo network)
     const externalId = 0; // No external signature
     const metadata = "Research Document - Confidential";
     const extURI = "https://university.edu/research/doc-123";
@@ -167,9 +174,9 @@ async function createDocumentClaim() {
     // Step 5: Check if claim already exists
     try {
       const existingClaim = await registry.getClaimById(methodId, fingerprint);
-      if (existingClaim.owner !== ethers.ZeroAddress) {
+      if (existingClaim.creator !== ethers.ZeroAddress) {
         console.log("Claim already exists:", {
-          owner: existingClaim.owner,
+          creator: existingClaim.creator,
           timestamp: new Date(
             Number(existingClaim.timestamp) * 1000
           ).toISOString(),
@@ -183,26 +190,30 @@ async function createDocumentClaim() {
     }
 
     // Step 6: Estimate gas cost
-    const gasEstimate = await registry.claimById.estimateGas(
+    const gasEstimate = await registry.estimateGas.claim({
       methodId,
       externalId,
       fingerprint,
+      externalSig: "0x",
+      pubKey: "0x",
       metadata,
-      extURI
-    );
+      extURI,
+    });
     console.log("Estimated gas:", gasEstimate.toString());
 
     // Step 7: Create the claim
     console.log("Creating claim...");
-    const tx = await registry.claimById(
-      methodId,
-      externalId,
-      fingerprint,
-      metadata,
-      extURI,
+    const tx = await registry.claim(
       {
-        gasLimit: (gasEstimate * BigInt(120)) / BigInt(100), // Add 20% buffer
-      }
+        methodId,
+        externalId,
+        fingerprint,
+        externalSig: "0x",
+        pubKey: "0x",
+        metadata,
+        extURI,
+      },
+      { gasLimit: (gasEstimate * BigInt(120)) / BigInt(100) }
     );
 
     console.log("Transaction hash:", tx.hash);
@@ -214,7 +225,7 @@ async function createDocumentClaim() {
     // Step 9: Verify the claim was created
     const claim = await registry.getClaimById(methodId, fingerprint);
     console.log("Claim created successfully:", {
-      owner: claim.owner,
+      creator: claim.creator,
       timestamp: new Date(Number(claim.timestamp) * 1000).toISOString(),
       metadata: claim.metadata,
       extURI: claim.extURI,
@@ -252,9 +263,10 @@ async function verifyClaim(fingerprint, expectedOwner) {
     const claim = await registry.getClaimById(methodId, fingerprint);
 
     const verification = {
-      exists: claim.owner !== ethers.ZeroAddress,
-      owner: claim.owner,
-      isCorrectOwner: claim.owner.toLowerCase() === expectedOwner.toLowerCase(),
+      exists: claim.creator !== ethers.ZeroAddress,
+      creator: claim.creator,
+      isCorrectCreator:
+        claim.creator.toLowerCase() === expectedOwner.toLowerCase(),
       timestamp: new Date(Number(claim.timestamp) * 1000),
       metadata: claim.metadata,
       extURI: claim.extURI,
@@ -285,11 +297,14 @@ import { createHash } from "crypto";
 
 // Good: Consistent approach using SHA-256
 const content = "My document content";
-const fingerprint = "0x" + createHash("sha256").update(content, "utf8").digest("hex");
+const fingerprint =
+  "0x" + createHash("sha256").update(content, "utf8").digest("hex");
 
 // Bad: Inconsistent encoding could lead to different hashes
-const badFingerprint1 = "0x" + createHash("sha256").update(content, "ascii").digest("hex");
-const badFingerprint2 = "0x" + createHash("sha256").update(content, "utf16le").digest("hex");
+const badFingerprint1 =
+  "0x" + createHash("sha256").update(content, "ascii").digest("hex");
+const badFingerprint2 =
+  "0x" + createHash("sha256").update(content, "utf16le").digest("hex");
 ```
 
 ### Handle File Types Appropriately
@@ -300,11 +315,13 @@ import { createHash } from "crypto";
 
 // For text files - ensure consistent encoding
 const textContent = fs.readFileSync("document.txt", "utf8");
-const textHash = "0x" + createHash("sha256").update(textContent, "utf8").digest("hex");
+const textHash =
+  "0x" + createHash("sha256").update(textContent, "utf8").digest("hex");
 
 // For binary files - read as buffer
 const binaryContent = fs.readFileSync("image.jpg");
-const binaryHash = "0x" + createHash("sha256").update(binaryContent).digest("hex");
+const binaryHash =
+  "0x" + createHash("sha256").update(binaryContent).digest("hex");
 ```
 
 ### Normalize Data Before Hashing
@@ -315,12 +332,14 @@ import { createHash } from "crypto";
 // For JSON data, sort keys and remove whitespace
 const data = { b: 2, a: 1, c: 3 };
 const normalized = JSON.stringify(data, Object.keys(data).sort());
-const hash = "0x" + createHash("sha256").update(normalized, "utf8").digest("hex");
+const hash =
+  "0x" + createHash("sha256").update(normalized, "utf8").digest("hex");
 
 // For text, consider normalizing whitespace
 const text = "  Multiple   spaces   ";
 const normalizedText = text.trim().replace(/\s+/g, " ");
-const textHash = "0x" + createHash("sha256").update(normalizedText, "utf8").digest("hex");
+const textHash =
+  "0x" + createHash("sha256").update(normalizedText, "utf8").digest("hex");
 ```
 
 ## Error Handling and Recovery
@@ -331,15 +350,16 @@ const textHash = "0x" + createHash("sha256").update(normalizedText, "utf8").dige
 async function robustClaimCreation(content, metadata, extURI) {
   try {
     // Generate fingerprint using SHA-256
-    const fingerprint = "0x" + createHash("sha256").update(content, "utf8").digest("hex");
+    const fingerprint =
+      "0x" + createHash("sha256").update(content, "utf8").digest("hex");
 
     // Check if claim exists first
-    const existingClaim = await registry.getClaimById(1, fingerprint);
-    if (existingClaim.owner !== ethers.ZeroAddress) {
+    const existingClaim = await registry.getClaimById(0, fingerprint);
+    if (existingClaim.creator !== ethers.ZeroAddress) {
       return {
         success: false,
         reason: "CLAIM_EXISTS",
-        existingOwner: existingClaim.owner,
+        existingCreator: existingClaim.creator,
         timestamp: existingClaim.timestamp,
       };
     }
@@ -348,13 +368,15 @@ async function robustClaimCreation(content, metadata, extURI) {
     let retries = 3;
     while (retries > 0) {
       try {
-        const tx = await registry.claimById(
-          1,
-          0,
+        const tx = await registry.claim({
+          methodId: 0,
+          externalId: 0,
           fingerprint,
+          externalSig: "0x",
+          pubKey: "0x",
           metadata,
-          extURI
-        );
+          extURI,
+        });
         const receipt = await tx.wait();
 
         return {

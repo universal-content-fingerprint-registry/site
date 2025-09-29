@@ -165,75 +165,49 @@
     {
       "inputs": [
         {
-          "internalType": "uint16",
-          "name": "methodId",
-          "type": "uint16"
-        },
-        {
-          "internalType": "uint16",
-          "name": "externalId",
-          "type": "uint16"
-        },
-        {
-          "internalType": "bytes",
-          "name": "fingerprint",
-          "type": "bytes"
-        },
-        {
-          "internalType": "string",
-          "name": "metadata",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "extURI",
-          "type": "string"
+          "components": [
+            {
+              "internalType": "uint16",
+              "name": "methodId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "externalId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "fingerprint",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "externalSig",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pubKey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "string",
+              "name": "metadata",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "extURI",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct GeneralizedClaimRegistry.ClaimParams",
+          "name": "p",
+          "type": "tuple"
         }
       ],
-      "name": "claimById",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint16",
-          "name": "methodId",
-          "type": "uint16"
-        },
-        {
-          "internalType": "uint16",
-          "name": "externalId",
-          "type": "uint16"
-        },
-        {
-          "internalType": "bytes",
-          "name": "fingerprint",
-          "type": "bytes"
-        },
-        {
-          "internalType": "bytes",
-          "name": "externalSig",
-          "type": "bytes"
-        },
-        {
-          "internalType": "bytes",
-          "name": "pubkey",
-          "type": "bytes"
-        },
-        {
-          "internalType": "string",
-          "name": "metadata",
-          "type": "string"
-        },
-        {
-          "internalType": "string",
-          "name": "extURI",
-          "type": "string"
-        }
-      ],
-      "name": "claimByIdwithExternalSig",
+      "name": "claim",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

@@ -61,7 +61,16 @@ registerMethod(1, "SHA-256", "https://tools.ietf.org/html/rfc6234", 32);
 Users can create claims for their content:
 
 ```solidity
-claimById(1, 0, contentHash, "My Document", "https://example.com/doc");
+// using struct-based claim
+claim({
+  methodId: 0,
+  externalId: 0,
+  fingerprint: contentHash,
+  externalSig: "0x",
+  pubKey: "0x",
+  metadata: "My Document",
+  extURI: "https://example.com/doc",
+});
 ```
 
 3. **Retrieve Claims**

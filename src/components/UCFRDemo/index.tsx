@@ -9,7 +9,7 @@ import {
 // Removed unused viem imports - using Web Crypto API for SHA-256
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import styles from "./styles.module.css";
-import GeneralizaedClaimRegistryABI from "@site/static/GeneralizaedClaimRegistryABI.json";
+import GeneralizaedClaimRegistryABI from "@site/static/GeneralizedClaimRegistryABI.json";
 import HashContent from "./HashContent";
 import MethodStatus from "./MethodStatus";
 import CreateClaim from "./CreateClaim";
@@ -44,7 +44,7 @@ const stabilityZGT = {
 // Use the imported ABI
 const ClaimRegistryABI = GeneralizaedClaimRegistryABI.abi;
 
-const CONTRACT_ADDRESS = "0x233173F335B19d5f8689C5cA723707d25ff32Ac2";
+const CONTRACT_ADDRESS = "0xa462D0F7c54fFc3dEC60EaBeFE3762af4540B760";
 
 // Deterministic demo wallet - always the same for consistency
 const DEMO_PRIVATE_KEY = generatePrivateKey(); // Demo key
@@ -115,7 +115,7 @@ function UCFRDemoInner() {
     abi: ClaimRegistryABI,
     functionName: "getClaimByIdWithExtId",
     args: isValidVerifyHex
-      ? [0n, verifyFingerprint as `0x${string}`, 2n]
+      ? [0n, verifyFingerprint as `0x${string}`, 1n]
       : undefined,
     chainId: stabilityZGT.id,
     query: {
@@ -152,13 +152,17 @@ function UCFRDemoInner() {
       await writeContract({
         address: CONTRACT_ADDRESS,
         abi: ClaimRegistryABI,
-        functionName: "claimById",
+        functionName: "claim",
         args: [
-          0n, // methodId (SHA-256, pre-registered)
-          2n, // externalId (ECDSA signature)
-          sha256Hash as `0x${string}`,
-          metadata || "",
-          extURI || "",
+          {
+            methodId: 0n,
+            externalId: 1n,
+            fingerprint: sha256Hash as `0x${string}`,
+            externalSig: "0x",
+            pubKey: "0x",
+            metadata: metadata || "",
+            extURI: extURI || "",
+          },
         ],
         chain: stabilityZGT,
         account: demoAccount,
